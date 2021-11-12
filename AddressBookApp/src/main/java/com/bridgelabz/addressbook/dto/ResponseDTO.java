@@ -4,13 +4,11 @@ import lombok.Data;
 
 @Data
 public class ResponseDTO {
-	public String message;
-	public Object data;
+	private String message;
+	private Object data;
+
 	public ResponseDTO(String message, Object data) {
-		super();
 		this.message = message;
 		this.data = data;
 	}
-	
-
 }
