@@ -11,11 +11,14 @@ import com.bridgelabz.addressbook.model.ContactInfo;
 public interface IAddressBookServices {
 	List<ContactInfo> getContact();
 
-    ContactInfo getContactById(int contactId);
+    ContactInfo getContactById(long contactId);
 
     ContactInfo createContact(ContactDTO contactDTO);
 
-    ContactInfo updateContact(int contactId, ContactDTO contactDTO);
+    ContactInfo updateContact(long contactId, ContactDTO contactDTO);
 
-    void deleteContact(int contactId);
+    void deleteContact(long contactId);
+
+    String deleteAllAddressBookData();
+
 }

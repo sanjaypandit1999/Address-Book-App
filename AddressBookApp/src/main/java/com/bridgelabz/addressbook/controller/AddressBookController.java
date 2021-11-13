@@ -21,8 +21,11 @@ import com.bridgelabz.addressbook.dto.ResponseDTO;
 import com.bridgelabz.addressbook.model.ContactInfo;
 import com.bridgelabz.addressbook.services.IAddressBookServices;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/addressbook")
+@Slf4j
 public class AddressBookController {
 
 	@Autowired
@@ -30,6 +33,7 @@ public class AddressBookController {
 
 	@RequestMapping(value = { "", "/", "/get" })
 	public ResponseEntity<ResponseDTO> getContactData() {
+
 		List<ContactInfo> contactList = addressbookservice.getContact();
 		ResponseDTO response = new ResponseDTO("Get call success", contactList);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
@@ -46,15 +50,17 @@ public class AddressBookController {
 	@PostMapping("/create")
 	public ResponseEntity<ResponseDTO> addContactData(@Valid @RequestBody ContactDTO contactDTO) {
 		ContactInfo contact = addressbookservice.createContact(contactDTO);
+		log.debug("Address Book DTO: " + contactDTO.toString());
 		ResponseDTO response = new ResponseDTO("Created contact data for", contact);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
 
 	}
 
 	@PutMapping("/update/{contactId}")
-	public ResponseEntity<ResponseDTO> updateContactData(@Valid @PathVariable("contactId") int contactId,
-			@RequestBody ContactDTO contactDTO) {
+	public ResponseEntity<ResponseDTO> updateContactData(@PathVariable("contactId") int contactId,
+			@Valid @RequestBody ContactDTO contactDTO) {
 		ContactInfo contact = addressbookservice.updateContact(contactId, contactDTO);
+		log.debug("AddressBook Contact After Update " + contact.toString());
 		ResponseDTO response = new ResponseDTO("Updated contact data for", contact);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
 
@@ -66,5 +72,12 @@ public class AddressBookController {
 		ResponseDTO response = new ResponseDTO("Delete call success for id ", "deleted id:" + contactId);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
 
+	}
+
+	@DeleteMapping("/deleteall")
+	public ResponseEntity<ResponseDTO> deleteAllAddressBookData() {
+		String message = addressbookservice.deleteAllAddressBookData();
+		ResponseDTO respDTO = new ResponseDTO("Deleteall:", message);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
 }
