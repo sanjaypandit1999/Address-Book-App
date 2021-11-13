@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbook.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,9 @@ public interface IAddressBookServices {
 	List<ContactInfo> getContactByFirstName(String firstName);
 
 	List<ContactInfo> getContactByCity(String city);
+
+	Optional<ContactInfo> getData(String token);
+
+	List<ContactInfo> getAllContacts(String token);
 
 }

@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbook.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.bridgelabz.addressbook.dto.ContactDTO;
 import com.bridgelabz.addressbook.dto.ResponseDTO;
+import com.bridgelabz.addressbook.exception.AddressBookException;
 import com.bridgelabz.addressbook.model.ContactInfo;
 import com.bridgelabz.addressbook.services.IAddressBookServices;
+import com.bridgelabz.addressbook.util.TokenUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/addressbook")
 @Slf4j
 public class AddressBookController {
+
+	@Autowired
+	TokenUtil tokenUtil;
 
 	@Autowired
 	private IAddressBookServices addressbookservice;
@@ -44,7 +50,8 @@ public class AddressBookController {
 	public ResponseEntity<ResponseDTO> addContactData(@Valid @RequestBody ContactDTO contactDTO) {
 		ContactInfo contact = addressbookservice.createContact(contactDTO);
 		log.debug("Address Book DTO: " + contactDTO.toString());
-		ResponseDTO response = new ResponseDTO("Created contact data for", contact);
+		ResponseDTO response = new ResponseDTO("Contact Data Added Successfully",
+				tokenUtil.createToken(contact.getContactId()));
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
 
 	}
@@ -54,7 +61,7 @@ public class AddressBookController {
 			@Valid @RequestBody ContactDTO contactDTO) {
 		ContactInfo contact = addressbookservice.updateContact(contactId, contactDTO);
 		log.debug("AddressBook Contact After Update " + contact.toString());
-		ResponseDTO response = new ResponseDTO("Updated contact data for", contact);
+		ResponseDTO response = new ResponseDTO("Updated Contact Data ", tokenUtil.createToken(contact.getContactId()));
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
 
 	}
@@ -128,5 +135,30 @@ public class AddressBookController {
 		contactList = addressbookservice.sortByPincode();
 		ResponseDTO response = new ResponseDTO("Get Call  is Successful Sort By PinCode: ", contactList);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/readallcontactbytoken")
+	public ResponseEntity<ResponseDTO> readdata(@RequestHeader(name = "token") String token)
+			throws AddressBookException {
+		List<ContactInfo> contactList = null;
+		contactList = addressbookservice.getAllContacts(token);
+		if (contactList.size() > 0) {
+			ResponseDTO responseDTO = new ResponseDTO("all user Fetched successfully", contactList);
+			return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
+		} else {
+			throw new AddressBookException("No Data Found");
+		}
+
+	}
+
+	@GetMapping("/readdatabytoken")
+	public ResponseEntity<ResponseDTO> readupdatedata(@RequestHeader(name = "token") String token)
+			throws AddressBookException {
+		Optional<ContactInfo> readData = null;
+		readData = addressbookservice.getData(token);
+
+		ResponseDTO responseDTO = new ResponseDTO("Updated data", readData);
+		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
+
 	}
 }

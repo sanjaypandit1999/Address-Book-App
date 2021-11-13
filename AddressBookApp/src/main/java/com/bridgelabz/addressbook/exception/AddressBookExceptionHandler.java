@@ -24,7 +24,7 @@ public class AddressBookExceptionHandler {
 	public ResponseEntity<ResponseDTO> handelHttpMessageNotReadableException(
 			HttpMessageNotReadableException exception) {
 		log.error("Invalid Date Format", exception);
-		ResponseDTO responseDTO = new ResponseDTO(message, "Should have date in dd MMM yyyy format");
+		ResponseDTO responseDTO = new ResponseDTO(message, "Should have date in dd MM yyyy format");
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 	}
 

@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbook.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,14 @@ import com.bridgelabz.addressbook.dto.ContactDTO;
 import com.bridgelabz.addressbook.exception.AddressBookException;
 import com.bridgelabz.addressbook.model.ContactInfo;
 import com.bridgelabz.addressbook.repository.AddressbBookRepository;
+import com.bridgelabz.addressbook.util.TokenUtil;
 
 @Service
 public class AddressBookServices implements IAddressBookServices {
+
+	@Autowired
+	TokenUtil tokenUtil;
+
 	@Autowired
 	private AddressbBookRepository addressBookRepository;
 
@@ -27,7 +33,7 @@ public class AddressBookServices implements IAddressBookServices {
 
 	public ContactInfo createContact(ContactDTO contactDTO) {
 		ContactInfo contact = new ContactInfo();
-        contact.createContact(contactDTO);
+		contact.createContact(contactDTO);
 		return addressBookRepository.save(contact);
 	}
 
@@ -80,5 +86,25 @@ public class AddressBookServices implements IAddressBookServices {
 	@Override
 	public List<ContactInfo> getContactByCity(String city) {
 		return addressBookRepository.findContactListByCity(city);
+	}
+
+	public Optional<ContactInfo> getData(String token) {
+		Long id = tokenUtil.decodeToken(token);
+		Optional<ContactInfo> contactCheck = addressBookRepository.findById(id);
+		if (contactCheck.isPresent()) {
+			Optional<ContactInfo> contactData = addressBookRepository.findById(id);
+			return contactData;
+		}
+		return null;
+	}
+
+	public List<ContactInfo> getAllContacts(String token) {
+		Long id = tokenUtil.decodeToken(token);
+		Optional<ContactInfo> contactCheck = addressBookRepository.findById(id);
+		if (contactCheck.isPresent()) {
+			List<ContactInfo> contactList = addressBookRepository.findAll();
+			return contactList;
+		}
+		return null;
 	}
 }

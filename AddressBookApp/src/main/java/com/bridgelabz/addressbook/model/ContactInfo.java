@@ -1,6 +1,5 @@
 package com.bridgelabz.addressbook.model;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,7 +22,7 @@ public class ContactInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Contact_Id")
-	private int contactId;
+	private long contactId;
 	@Column(name = "First_Name")
 	private String firstName;
 	private String lastName;
@@ -57,16 +56,16 @@ public class ContactInfo {
 		this.phone = contactDTO.phone;
 		this.updateDate = new Date(System.currentTimeMillis());
 	}
-	
-	 public void createContact(ContactDTO contactDTO) {
-       this.firstName = contactDTO.firstName;
-       this.lastName = contactDTO.lastName;
-       this.address = contactDTO.address;
-       this.city = contactDTO.city;
-       this.state = contactDTO.state;
-       this.zip = contactDTO.zip;
-       this.phone = contactDTO.phone;
-       this.registerDate = new Date(System.currentTimeMillis());
 
-   }
+	public void createContact(ContactDTO contactDTO) {
+		this.firstName = contactDTO.firstName;
+		this.lastName = contactDTO.lastName;
+		this.address = contactDTO.address;
+		this.city = contactDTO.city;
+		this.state = contactDTO.state;
+		this.zip = contactDTO.zip;
+		this.phone = contactDTO.phone;
+		this.registerDate = new Date(System.currentTimeMillis());
+
+	}
 }
