@@ -17,13 +17,16 @@ public class ContactInfo {
 
 	public ContactInfo(int contactId, ContactDTO contactDTO) {
 		this.contactId = contactId;
+		this.updateContact(contactDTO);
+	}
+
+	private void updateContact(ContactDTO contactDTO) {
 		this.firstName = contactDTO.firstName;
 		this.lastName = contactDTO.lastName;
 		this.address = contactDTO.address;
-		this.state = contactDTO.state;
 		this.city = contactDTO.city;
+		this.state = contactDTO.state;
 		this.zip = contactDTO.zip;
 		this.phone = contactDTO.phone;
 	}
-
 }
