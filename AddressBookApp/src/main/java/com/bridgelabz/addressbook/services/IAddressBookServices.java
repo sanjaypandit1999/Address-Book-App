@@ -11,14 +11,28 @@ import com.bridgelabz.addressbook.model.ContactInfo;
 public interface IAddressBookServices {
 	List<ContactInfo> getContact();
 
-    ContactInfo getContactById(long contactId);
+	ContactInfo getContactById(long contactId);
 
-    ContactInfo createContact(ContactDTO contactDTO);
+	ContactInfo createContact(ContactDTO contactDTO);
 
-    ContactInfo updateContact(long contactId, ContactDTO contactDTO);
+	ContactInfo updateContact(long contactId, ContactDTO contactDTO);
 
-    void deleteContact(long contactId);
+	void deleteContact(long contactId);
 
-    String deleteAllAddressBookData();
+	String deleteAllAddressBookData();
+
+	List<ContactInfo> sortByPincode();
+
+	List<ContactInfo> sortByCity();
+
+	List<ContactInfo> sortByName();
+
+	List<ContactInfo> getContactByPincode(String zip);
+
+	List<ContactInfo> getContactByLastName(String lastName);
+
+	List<ContactInfo> getContactByFirstName(String firstName);
+
+	List<ContactInfo> getContactByCity(String city);
 
 }

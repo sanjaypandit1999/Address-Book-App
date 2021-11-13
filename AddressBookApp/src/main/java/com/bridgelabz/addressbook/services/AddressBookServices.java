@@ -45,4 +45,39 @@ public class AddressBookServices implements IAddressBookServices {
 		addressBookRepository.deleteAll();
 		return "Successfully deleted all the Contacts from AddressBook";
 	}
+
+	@Override
+	public List<ContactInfo> sortByPincode() {
+		return addressBookRepository.sortByPincode();
+	}
+
+	@Override
+	public List<ContactInfo> sortByCity() {
+		return addressBookRepository.sortByCity();
+	}
+
+	@Override
+	public List<ContactInfo> sortByName() {
+		return addressBookRepository.sortByName();
+	}
+
+	@Override
+	public List<ContactInfo> getContactByPincode(String zip) {
+		return addressBookRepository.findContactListByZip(zip);
+	}
+
+	@Override
+	public List<ContactInfo> getContactByLastName(String lastName) {
+		return addressBookRepository.findContactListByLastName(lastName);
+	}
+
+	@Override
+	public List<ContactInfo> getContactByFirstName(String firstName) {
+		return addressBookRepository.findContactListByFirstName(firstName);
+	}
+
+	@Override
+	public List<ContactInfo> getContactByCity(String city) {
+		return addressBookRepository.findContactListByCity(city);
+	}
 }
