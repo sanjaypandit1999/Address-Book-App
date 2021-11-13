@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbook.model;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.bridgelabz.addressbook.dto.ContactDTO;
 
@@ -29,10 +32,11 @@ public class ContactInfo {
 	private String state;
 	private String zip;
 	private String phone;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date registerDate;
 
-	private LocalDate registerDate;
-
-	private LocalDate updateDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updateDate;
 
 	public ContactInfo(ContactDTO contactDTO) {
 
@@ -44,7 +48,6 @@ public class ContactInfo {
 	}
 
 	public void updateContact(ContactDTO contactDTO) {
-		this.contactId = contactId;
 		this.firstName = contactDTO.firstName;
 		this.lastName = contactDTO.lastName;
 		this.address = contactDTO.address;
@@ -52,8 +55,18 @@ public class ContactInfo {
 		this.state = contactDTO.state;
 		this.zip = contactDTO.zip;
 		this.phone = contactDTO.phone;
-		this.registerDate = contactDTO.registerDate;
-		this.updateDate = contactDTO.updateDate;
-
+		this.updateDate = new Date(System.currentTimeMillis());
 	}
+	
+	 public void createContact(ContactDTO contactDTO) {
+       this.firstName = contactDTO.firstName;
+       this.lastName = contactDTO.lastName;
+       this.address = contactDTO.address;
+       this.city = contactDTO.city;
+       this.state = contactDTO.state;
+       this.zip = contactDTO.zip;
+       this.phone = contactDTO.phone;
+       this.registerDate = new Date(System.currentTimeMillis());
+
+   }
 }

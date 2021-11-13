@@ -26,7 +26,8 @@ public class AddressBookServices implements IAddressBookServices {
 	}
 
 	public ContactInfo createContact(ContactDTO contactDTO) {
-		ContactInfo contact = new ContactInfo(contactDTO);
+		ContactInfo contact = new ContactInfo();
+        contact.createContact(contactDTO);
 		return addressBookRepository.save(contact);
 	}
 
